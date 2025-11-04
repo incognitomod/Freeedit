@@ -150,8 +150,9 @@
         </div>
         <div class="tool-card">
             <h3>QR Code Generator</h3>
-            <input type="text" placeholder="Enter URL or text for QR code">
-            <button onclick="alert('Feature coming soon!')">Generate QR Code</button>
+            <input type="text" id="qrTextInput" placeholder="Enter URL or text for QR code">
+            <button onclick="generateQRCode()">Generate QR Code</button>
+            <div id="qrcode" style="margin-top: 15px;"></div>
         </div>
     </section>
 
@@ -159,6 +160,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 
 <script>
 // File type detection
@@ -293,6 +295,21 @@ function trimVideo(){ alert('Trim first 5 seconds only. Works for very small fil
 function convertVideo(){ alert('Convert to WebM works only for small files.'); }
 function extractFrames(){ alert('Extract frames from small videos only.'); }
 function extractAudio(){ alert('Extract audio from small videos only.'); }
+
+// QR Code Generator
+var qrcode = new QRCode(document.getElementById("qrcode"), {
+    width : 128,
+    height : 128
+});
+
+function generateQRCode(){
+    var text = document.getElementById("qrTextInput").value;
+    if (text) {
+        qrcode.makeCode(text);
+    } else {
+        alert("Input a text");
+    }
+}
 </script>
 
 </body>
