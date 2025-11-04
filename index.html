@@ -1,226 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>All-in-One Free Tool Site</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-<style>
-body { font-family: 'Inter', sans-serif; margin:0; padding:0; background:#f4f6f8; color:#333; }
-header { background:#4a90e2; color:white; padding:15px; text-align:center; font-size:1.5rem; font-weight:600; }
-.container { max-width:900px; margin:20px auto; padding:0 15px; }
-.tool-card { background:white; padding:20px; margin-bottom:15px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1);}
-.tool-card h2 { margin-top:0; font-size:1.2rem; color:#4a90e2; }
-input, button, select, textarea { width:100%; margin-top:10px; padding:10px; border-radius:6px; border:1px solid #ccc; font-size:1rem; }
-button { background:#4a90e2; color:white; border:none; cursor:pointer; transition:0.3s; }
-button:hover { background:#357ABD; }
-label { font-weight:600; margin-top:10px; display:block; }
-canvas, video { max-width:100%; border:1px solid #ccc; margin-top:10px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write real</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="landing-page">
+        <header>
+            <h1>Write real</h1>
+            <nav>
+                <button id="login-btn">Login</button>
+                <button id="signup-btn">Sign Up</button>
+            </nav>
+        </header>
+        <main>
+            <section id="hero">
+                <h2>Own your words.</h2>
+                <p>The secure platform for authentic writing.</p>
+            </section>
+            <section id="login-form" class="hidden">
+                <h2>Login</h2>
+                <form>
+                    <input type="text" placeholder="Username" required>
+                    <input type="password" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                </form>
+            </section>
+            <section id="signup-form" class="hidden">
+                <h2>Sign Up</h2>
+                <form>
+                    <input type="text" placeholder="Full Name" required>
+                    <input type="email" placeholder="Primary Email" required>
+                    <input type="text" placeholder="Government ID" required>
+                    <input type="text" placeholder="Username" required>
+                    <input type="password" placeholder="Password" required>
+                    <button type="submit">Sign Up</button>
+                </form>
+            </section>
+        </main>
+    </div>
+    <div id="main-app" class="hidden">
+        <header>
+            <h1>Write real</h1>
+            <nav>
+                <div class="header-engagement">
+                    <span id="streak-counter">🔥 5 days</span>
+                    <span id="notifications-bell">🔔</span>
+                </div>
+                <button id="home-btn" class="hidden">Home</button>
+                <button id="dashboard-btn">Dashboard</button>
+                <button id="logout-btn">Logout</button>
+            </nav>
+        </header>
+        <main>
+            <div id="main-content">
+                <div id="template-selection">
+                    <h2>Choose a Template</h2>
+                    <div class="template-grid">
+                        <div class="template-card">Blog Post</div>
+                        <div class="template-card">Book / Novel</div>
+                        <div class="template-card">Research Paper</div>
+                        <div class="template-card">Blank Canvas</div>
+                    </div>
+                </div>
+                <div id="editor-container" class="hidden">
+                    <div id="toolbar">
+                        <button>Bold</button>
+                        <button>Italic</button>
+                        <button>Underline</button>
+                    <button id="font-btn">Change Font</button>
+                    <button id="photo-btn">Add Photo</button>
+                    <button id="voice-btn">Voice-to-Text</button>
+                        <button id="export-btn">Export as PDF</button>
+                        <button id="share-btn">Share</button>
+                        <button id="settings-btn">Settings</button>
+                    </div>
+                    <div id="editor" contenteditable="true">
+                        <p>Start writing your masterpiece...</p>
+                    </div>
+                </div>
 
-<header>All-in-One Free Tool Site</header>
-<div class="container">
+                <div id="share-modal" class="modal hidden">
+                    <div class="modal-content">
+                        <span class="close-btn">&times;</span>
+                        <h2>Share your work</h2>
+                        <input type="email" placeholder="Enter collaborator's email">
+                        <button>Add Collaborator</button>
+                    </div>
+                </div>
 
-<!-- File Upload & Detect -->
-<div class="tool-card">
-<h2>Upload & Detect File</h2>
-<input type="file" id="fileInput" multiple>
-<p id="fileTypeInfo"></p>
-</div>
-
-<!-- Text ↔ PDF -->
-<div class="tool-card">
-<h2>Text ↔ PDF</h2>
-<label>Enter Text to Convert to PDF:</label>
-<textarea id="textInput" rows="5" placeholder="Type here..."></textarea>
-<button onclick="textToPDF()">Convert Text → PDF</button>
-
-<label>Upload PDF to Extract Text:</label>
-<input type="file" id="pdfToTextInput" accept="application/pdf">
-<button onclick="pdfToText()">Convert PDF → Text</button>
-<textarea id="pdfTextOutput" rows="5" placeholder="PDF text will appear here..." readonly></textarea>
-</div>
-
-<!-- PDF Tools -->
-<div class="tool-card">
-<h2>PDF Tools (Small Files)</h2>
-<label>Upload PDF:</label>
-<input type="file" id="pdfToolInput" accept="application/pdf" multiple>
-<button onclick="rotatePDF()">Rotate PDF 90°</button>
-<button onclick="splitPDF()">Split PDF</button>
-<button onclick="mergePDF()">Merge PDFs</button>
-</div>
-
-<!-- Image Tools -->
-<div class="tool-card">
-<h2>Image Tools</h2>
-<label>Upload Image:</label>
-<input type="file" id="imageInput" accept="image/*">
-<label>Width (px):</label>
-<input type="number" id="imgWidth" placeholder="Original width">
-<label>Height (px):</label>
-<input type="number" id="imgHeight" placeholder="Original height">
-<button onclick="resizeImage()">Resize Image</button>
-<button onclick="convertImage()">Convert Format (PNG ↔ JPG)</button>
-<button onclick="rotateImage()">Rotate 90°</button>
-<button onclick="flipImage()">Flip Horizontally</button>
-<button onclick="grayscaleImage()">Grayscale</button>
-<canvas id="imageCanvas"></canvas>
-</div>
-
-<!-- Video Tools -->
-<div class="tool-card">
-<h2>Video Tools (Small Files)</h2>
-<label>Upload Video:</label>
-<input type="file" id="videoInput" accept="video/*">
-<video id="videoPreview" controls></video>
-<button onclick="trimVideo()">Trim Video (first 5s)</button>
-<button onclick="convertVideo()">Convert to WebM</button>
-<button onclick="extractFrames()">Extract Frames</button>
-<button onclick="extractAudio()">Extract Audio</button>
-</div>
-
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-
-<script>
-// File type detection
-document.getElementById('fileInput').addEventListener('change', function(e){
-    const files = e.target.files;
-    if(files.length){
-        const types = Array.from(files).map(f => f.type).join(', ');
-        document.getElementById('fileTypeInfo').innerText = 'Detected File Types: ' + types;
-    }
-});
-
-// Text → PDF
-const { jsPDF } = window.jspdf;
-function textToPDF(){
-    const doc = new jsPDF();
-    const text = document.getElementById('textInput').value;
-    if(!text){ alert('Enter some text first'); return; }
-    doc.text(text,10,10);
-    doc.save('output.pdf');
-}
-
-// PDF → Text (small PDFs)
-async function pdfToText(){
-    const input = document.getElementById('pdfToTextInput').files[0];
-    if(!input){ alert('Upload PDF first'); return; }
-    const arrayBuffer = await input.arrayBuffer();
-    const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
-    let text = '';
-    const pages = pdfDoc.getPages();
-    for(const p of pages){
-        const content = await p.getTextContent?.();
-        text += content?.items?.map(i=>i.str).join(' ')+'\n';
-    }
-    document.getElementById('pdfTextOutput').value = text || 'Text extraction may be limited in-browser.';
-}
-
-// PDF Tools (rotate/split/merge for small PDFs)
-async function rotatePDF(){
-    const input = document.getElementById('pdfToolInput').files[0];
-    if(!input){ alert('Upload PDF first'); return; }
-    const arrayBuffer = await input.arrayBuffer();
-    const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
-    const pages = pdfDoc.getPages();
-    pages.forEach(p => p.setRotation(p.getRotation().angle + 90));
-    const pdfBytes = await pdfDoc.save();
-    downloadBlob(pdfBytes,'rotated.pdf','application/pdf');
-}
-async function splitPDF(){
-    alert('PDF split works on small single PDFs in-browser. For multiple pages, download separately.');
-}
-async function mergePDF(){
-    alert('PDF merge works on small PDFs. Select multiple small PDFs and merge one by one.');
-}
-function downloadBlob(data,filename,type){
-    const blob = new Blob([data],{type:type});
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = filename;
-    link.click();
-}
-
-// Image Tools
-function resizeImage(){
-    const input = document.getElementById('imageInput').files[0];
-    if(!input){ alert('Upload image'); return; }
-    const width = parseInt(document.getElementById('imgWidth').value);
-    const height = parseInt(document.getElementById('imgHeight').value);
-    const img = new Image();
-    img.onload = function(){
-        const canvas = document.getElementById('imageCanvas');
-        canvas.width = width || img.width;
-        canvas.height = height || img.height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img,0,0,canvas.width,canvas.height);
-    }
-    img.src = URL.createObjectURL(input);
-}
-function convertImage(){
-    const canvas = document.getElementById('imageCanvas');
-    if(!canvas.width){ alert('Resize first'); return; }
-    canvas.toBlob(blob=>{
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'converted_image.png';
-        link.click();
-    },'image/png');
-}
-function rotateImage(){
-    const canvas = document.getElementById('imageCanvas');
-    if(!canvas.width){ alert('Upload/Resize first'); return; }
-    const ctx = canvas.getContext('2d');
-    const temp = document.createElement('canvas');
-    temp.width = canvas.height;
-    temp.height = canvas.width;
-    const tctx = temp.getContext('2d');
-    tctx.translate(temp.width/2,temp.height/2);
-    tctx.rotate(Math.PI/2);
-    tctx.drawImage(canvas,-canvas.width/2,-canvas.height/2);
-    canvas.width = temp.width;
-    canvas.height = temp.height;
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.drawImage(temp,0,0);
-}
-function flipImage(){
-    const canvas = document.getElementById('imageCanvas');
-    if(!canvas.width){ alert('Upload/Resize first'); return; }
-    const ctx = canvas.getContext('2d');
-    ctx.translate(canvas.width,0);
-    ctx.scale(-1,1);
-    const imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.putImageData(imgData,0,0);
-}
-function grayscaleImage(){
-    const canvas = document.getElementById('imageCanvas');
-    if(!canvas.width){ alert('Upload/Resize first'); return; }
-    const ctx = canvas.getContext('2d');
-    const imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
-    const d = imgData.data;
-    for(let i=0;i<d.length;i+=4){
-        const avg = (d[i]+d[i+1]+d[i+2])/3;
-        d[i]=d[i+1]=d[i+2]=avg;
-    }
-    ctx.putImageData(imgData,0,0);
-}
-
-// Video Tools (small videos)
-const videoInput = document.getElementById('videoInput');
-const videoPreview = document.getElementById('videoPreview');
-videoInput.addEventListener('change',()=>{ videoPreview.src = URL.createObjectURL(videoInput.files[0]); });
-function trimVideo(){ alert('Trim first 5 seconds only. Works for very small files in-browser.'); }
-function convertVideo(){ alert('Convert to WebM works only for small files.'); }
-function extractFrames(){ alert('Extract frames from small videos only.'); }
-function extractAudio(){ alert('Extract audio from small videos only.'); }
-
-</script>
+                <div id="settings-modal" class="modal hidden">
+                    <div class="modal-content">
+                        <span class="close-btn">&times;</span>
+                        <h2>Settings</h2>
+                        <label>
+                            <input type="radio" name="privacy" value="public" checked> Public
+                        </label>
+                        <label>
+                            <input type="radio" name="privacy" value="private"> Private
+                        </label>
+                    </div>
+                </div>
+                <div id="social-feed">
+                    <h2>Trending on Write real</h2>
+                    <div class="post">
+                        <h3>The Future of AI in Writing</h3>
+                        <p>by Jane Doe</p>
+                        <div class="post-actions">
+                            <button>Upvote</button>
+                            <button>Comment</button>
+                            <button>Share</button>
+                        </div>
+                    </div>
+                    <div class="post">
+                        <h3>A Short Story About a Long Journey</h3>
+                        <p>by John Smith</p>
+                        <div class="post-actions">
+                            <button>Upvote</button>
+                            <button>Comment</button>
+                            <button>Share</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="dashboard-view" class="hidden">
+                <h2>Your Dashboard</h2>
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <h3>Followers</h3>
+                        <p>1,234</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Upvotes</h3>
+                        <p>56,789</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Estimated Payout</h3>
+                        <p>$123.45</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div id="toast-notification" class="hidden">
+        <p>Don't forget to finish your draft!</p>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
